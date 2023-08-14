@@ -2,8 +2,6 @@ package io.bipcrypto.bip39
 
 object DictionaryChiTraditional : WordList {
 
-    override val delimiter: Char = ' '
-
     override val wordList = listOf(
         "的",
         "一",
@@ -2052,6 +2050,6 @@ object DictionaryChiTraditional : WordList {
         "韋",
         "怨",
         "矮",
-        "歇"
+        "歇",
     )
 }

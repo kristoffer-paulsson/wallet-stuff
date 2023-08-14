@@ -2,8 +2,6 @@ package io.bipcrypto.bip39
 
 object DictionaryKor : WordList {
 
-    override val delimiter: Char = ' '
-
     override val wordList = listOf(
         "가격",
         "가끔",
@@ -2052,6 +2050,6 @@ object DictionaryKor : WordList {
         "희망",
         "희생",
         "흰색",
-        "힘껏"
+        "힘껏",
     )
 }

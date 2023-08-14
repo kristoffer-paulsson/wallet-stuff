@@ -2,8 +2,6 @@ package io.bipcrypto.bip39
 
 object DictionstyCze : WordList {
 
-    override val delimiter: Char = ' '
-
     override val wordList = listOf(
         "abdikace",
         "abeceda",
@@ -2052,6 +2050,6 @@ object DictionstyCze : WordList {
         "zvon",
         "zvrat",
         "zvukovod",
-        "zvyk"
+        "zvyk",
     )
 }

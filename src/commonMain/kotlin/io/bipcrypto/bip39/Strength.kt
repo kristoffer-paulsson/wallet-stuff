@@ -1,23 +1,26 @@
 package io.bipcrypto.bip39
 
-enum class Strength(val length: Int, val size: Int, val checksum: Int, val count: Int) {
+enum class Strength(val bitLength: Int, val size: Int, val checksum: Int, val wordCount: Int) {
     DEFAULT(128, 16, 4, 12),
-    LOW(160, 20,5, 15),
+    LOW(160, 20, 5, 15),
     MEDIUM(192, 24, 6, 18),
-    HIGH(224, 28,7, 21),
+    HIGH(224, 28, 7, 21),
     VERY_HIGH(256, 32, 8, 24);
 
     companion object {
-        fun byLength(length: Int) = when(length) {
-            DEFAULT.length -> DEFAULT
-            LOW.length -> LOW
-            MEDIUM.length -> MEDIUM
-            HIGH.length -> HIGH
-            VERY_HIGH.length -> VERY_HIGH
+        val sizes = setOf(DEFAULT.size, LOW.size, MEDIUM.size, HIGH.size, VERY_HIGH.size)
+        val counts = setOf(DEFAULT.wordCount, LOW.wordCount, MEDIUM.wordCount, HIGH.wordCount, VERY_HIGH.wordCount)
+
+        fun byLength(length: Int) = when (length) {
+            DEFAULT.bitLength -> DEFAULT
+            LOW.bitLength -> LOW
+            MEDIUM.bitLength -> MEDIUM
+            HIGH.bitLength -> HIGH
+            VERY_HIGH.bitLength -> VERY_HIGH
             else -> error("Invalid length for standard strength.")
         }
 
-        fun bySize(size: Int) = when(size) {
+        fun bySize(size: Int) = when (size) {
             DEFAULT.size -> DEFAULT
             LOW.size -> LOW
             MEDIUM.size -> MEDIUM
@@ -26,12 +29,12 @@ enum class Strength(val length: Int, val size: Int, val checksum: Int, val count
             else -> error("Invalid size for standard strength.")
         }
 
-        fun byCount(count: Int) = when(count) {
-            DEFAULT.count -> DEFAULT
-            LOW.count -> LOW
-            MEDIUM.count -> MEDIUM
-            HIGH.count -> HIGH
-            VERY_HIGH.count -> VERY_HIGH
+        fun byCount(count: Int) = when (count) {
+            DEFAULT.wordCount -> DEFAULT
+            LOW.wordCount -> LOW
+            MEDIUM.wordCount -> MEDIUM
+            HIGH.wordCount -> HIGH
+            VERY_HIGH.wordCount -> VERY_HIGH
             else -> error("Invalid count for standard strength.")
         }
     }

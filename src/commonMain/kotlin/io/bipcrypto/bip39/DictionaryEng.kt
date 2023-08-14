@@ -2,8 +2,6 @@ package io.bipcrypto.bip39
 
 object DictionaryEng : WordList {
 
-    override val delimiter: Char = ' '
-
     override val wordList = listOf(
         "abandon",
         "ability",

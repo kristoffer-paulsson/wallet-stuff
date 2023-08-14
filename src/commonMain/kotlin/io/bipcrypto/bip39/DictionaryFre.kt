@@ -2,8 +2,6 @@ package io.bipcrypto.bip39
 
 object DictionaryFre : WordList {
 
-    override val delimiter: Char = ' '
-
     override val wordList = listOf(
         "abaisser",
         "abandon",
@@ -2052,6 +2050,6 @@ object DictionaryFre : WordList {
         "zèbre",
         "zénith",
         "zeste",
-        "zoologie"
+        "zoologie",
     )
 }

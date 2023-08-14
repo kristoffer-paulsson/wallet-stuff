@@ -1,7 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "1.8.21"
-    kotlin("plugin.serialization") version "1.8.21"
-
+    kotlin("multiplatform") version "1.9.0"
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 group = "io.bipcrypto"
@@ -9,6 +8,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 kotlin {
@@ -42,6 +42,11 @@ kotlin {
     
     sourceSets {
         val commonMain by getting {
+            dependencies {
+                implementation("org.angproj.aux.util:angelos-project-aux:0.0.1")
+                implementation("org.angproj.crypt:angelos-project-crypt:0.0.1")
+                implementation("com.doist.x:normalize:1.0.5")
+            }
         }
         val commonTest by getting {
             dependencies {

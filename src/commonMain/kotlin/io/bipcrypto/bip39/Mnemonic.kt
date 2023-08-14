@@ -1,31 +1,34 @@
 package io.bipcrypto.bip39
 
-import kotlin.jvm.JvmInline
+import doist.x.normalize.Form
+import doist.x.normalize.normalize
+import org.angproj.crypt.kdf.PasswordBasedKdf2
+import org.angproj.crypt.sha.Sha512Hash
 
 
-@JvmInline
-value class Mnemonic(val words: List<String>) {
+data class Mnemonic(val words: List<String>, val language: Language) {
 
     init {
-        require(sizes.contains(words.size))
+        require(Strength.counts.contains(words.size)) { "Must be 12, 15, 18, 21 or 24 words but ${words.size} was found!" }
+        require(WordList.validateWords(words, language)) { "Unknown word(s) in ${language}. (${words.joinToString(" ")})" }
     }
 
-    fun toKeys(language: Language): Keys {
+    fun toKeys(): Keys {
         val wordList = WordList.getDictionary(language)
         val out = IntArray(words.size)
         words.forEachIndexed { index, s -> out[index] = wordList.wordOf(s) }
         return Keys(out)
     }
 
-    override fun toString(): String = words.joinToString(" ")
-
-    companion object {
-        val sizes = setOf(
-            Strength.DEFAULT.count,
-            Strength.LOW.count,
-            Strength.MEDIUM.count,
-            Strength.HIGH.count,
-            Strength.VERY_HIGH.count
-        )
+    fun toSentence(): ByteArray {
+        return words.joinToString(Delimiter.find(language).toString()).normalize(Form.NFKD).encodeToByteArray()
     }
+}
+
+fun Mnemonic.toSeed(passphrase: Passphrase): Seed {
+    val password = this.toSentence()
+    val salt = passphrase.toSalt()
+
+    val kdf = PasswordBasedKdf2.create(Sha512Hash, 64, 2048)
+    return Seed(kdf.newKey(password, salt))
 }

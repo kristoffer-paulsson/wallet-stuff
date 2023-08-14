@@ -2,8 +2,6 @@ package io.bipcrypto.bip39
 
 object DictionarySpa : WordList {
 
-    override val delimiter: Char = ' '
-
     override val wordList = listOf(
         "ábaco",
         "abdomen",
@@ -2052,6 +2050,6 @@ object DictionarySpa : WordList {
         "zona",
         "zorro",
         "zumo",
-        "zurdo"
+        "zurdo",
     )
 }

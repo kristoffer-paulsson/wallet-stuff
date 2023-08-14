@@ -1,49 +1,50 @@
 package io.bipcrypto.bip39
 
-import io.bipcrypto.crypto.PBKDF2
+import doist.x.normalize.Form
+import doist.x.normalize.normalize
 
 class Bip39 internal constructor(
     val entropy: Entropy,
     val mnemonic: Mnemonic,
     val passphrase: Passphrase,
-    val language: Language,
     val strength: Strength
 ) {
 
     init {
         require(entropy.entropy.size == strength.size)
-        require(mnemonic.words.size == strength.count)
-        require(WordList.getDictionary(language).wordList.containsAll(mnemonic.words))
+        require(mnemonic.words.size == strength.wordCount)
     }
 
-    val seed: Seed by lazy { mnemonicToSeed(mnemonic, passphrase) }
+    val seed: Seed by lazy { mnemonic.toSeed(passphrase) }
 
     constructor(
         entropy: Entropy,
         passphrase: Passphrase = Passphrase(),
         language: Language = Language.ENGLISH,
-        strength: Strength = Strength.DEFAULT
-    ) : this(entropy, entropy.toKeys().toMnemonic(language), passphrase, language, strength)
+    ) : this(entropy, entropy.toKeys().toMnemonic(language), passphrase, Strength.bySize(entropy.entropy.size))
 
     constructor(
         mnemonic: Mnemonic,
         passphrase: Passphrase = Passphrase(),
-        language: Language = Language.ENGLISH,
-        strength: Strength = Strength.DEFAULT
-    ) : this(mnemonic.toKeys(language).toEntropy(), mnemonic, passphrase, language, strength)
+    ) : this(mnemonic.toKeys().toEntropy(), mnemonic, passphrase, Strength.byCount(mnemonic.words.size))
 
     companion object {
-        const val radix = 2048
-        const val kLen = 512
+        fun fromSentence(sentence: String, passphrase: String = ""): Bip39 {
+            val normalized = sentence.normalize(Form.NFKD)
+            val sep = Delimiter.find(normalized)
+            val words = mutableListOf<String>()
+            normalized.split(sep).forEach { words.add(it.trim()) }
+            val language = WordList.recognize(words)
 
-        private fun mnemonicToSeed(mnemonic: Mnemonic, passphrase: Passphrase): Seed {
-            val password = mnemonic.toString().encodeToByteArray()
-            val salt = passphrase.toString().encodeToByteArray()
+            return Bip39(Mnemonic(words, language), Passphrase(passphrase))
+        }
 
-            // https://github.com/horizontalsystems/hd-wallet-kit-android/blob/master/src/main/kotlin/io/horizontalsystems/hdwalletkit/PBKDFSHA512.kt
-            // https://github.com/phlay/pspka/blob/master/pspka-pbkdf2-demo/pbkdf2-hmac-sha512.c
-            return Seed(PBKDF2.sha512Key(password, salt, radix, kLen))
+        fun fromSentence(sentence: String, language: Language, passphrase: String = ""): Bip39 {
+            val normalized = sentence.normalize(Form.NFKD)
+            val sep = Delimiter.find(normalized)
+            val words = mutableListOf<String>()
+            normalized.split(sep).forEach { words.add(it.trim()) }
+            return Bip39(Mnemonic(words, language), Passphrase(passphrase))
         }
     }
 }
-

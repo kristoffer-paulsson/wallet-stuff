@@ -1,6 +1,6 @@
 package io.bipcrypto.bip39
 
-import io.bipcrypto.crypto.HASH
+import org.angproj.crypt.sha.Sha256Hash
 import kotlin.jvm.JvmInline
 
 @JvmInline
@@ -14,65 +14,66 @@ value class Keys(private val mnemonic: IntArray) {
         val wordList = WordList.getDictionary(language)
         val words = mutableListOf<String>()
         mnemonic.forEach { i -> words.add(wordList.wordAt(i)) }
-        return Mnemonic(words)
+        return Mnemonic(words, language)
     }
 
     internal fun toEntropy(): Entropy {
         val strength = Strength.byCount(mnemonic.size)
         val entropy = ByteArray(strength.size)
-        (entropy.indices).forEachIndexed { index, i -> entropy[index] = extractByte(mnemonic, index) }
-
-        check(verifyChecksum(HASH.sha256(entropy).raw, strength, mnemonic.last())) { "Mnemonic checksum validation failure." }
+        (entropy.indices).forEachIndexed { index, _ -> entropy[index] = extractByte(mnemonic, index) }
+        val sha = Sha256Hash.create()
+        sha.update(entropy)
+        check(verifyChecksum(sha.final(), strength, mnemonic.last())) { "Mnemonic checksum validation failure." }
         return Entropy(entropy)
     }
 
     companion object {
         val sizes = setOf(
-            Strength.DEFAULT.count,
-            Strength.LOW.count,
-            Strength.MEDIUM.count,
-            Strength.HIGH.count,
-            Strength.VERY_HIGH.count
+            Strength.DEFAULT.wordCount,
+            Strength.LOW.wordCount,
+            Strength.MEDIUM.wordCount,
+            Strength.HIGH.wordCount,
+            Strength.VERY_HIGH.wordCount
         )
 
-        private fun extract1(m: IntArray, o: Int): Byte = (m[o+0] shr 3).toByte()
+        private fun extract1(m: IntArray, o: Int): Byte = (m[o + 0] shr 3).toByte()
 
         private fun extract2(m: IntArray, o: Int): Byte = ((
-                (m[o+0] and 0x00000007) shl 5) or (
-                (m[o+1] and 0x000007c0) shr 6)).toByte()
+                (m[o + 0] and 0x00000007) shl 5) or (
+                (m[o + 1] and 0x000007c0) shr 6)).toByte()
 
         private fun extract3(m: IntArray, o: Int): Byte = ((
-                (m[o+1] and 0x0000003f) shl 2) or (
-                (m[o+2] and 0x00000600) shr 9)).toByte()
+                (m[o + 1] and 0x0000003f) shl 2) or (
+                (m[o + 2] and 0x00000600) shr 9)).toByte()
 
         private fun extract4(m: IntArray, o: Int): Byte = (
-                (m[o+2] and 0x000001fe) shr 1).toByte()
+                (m[o + 2] and 0x000001fe) shr 1).toByte()
 
         private fun extract5(m: IntArray, o: Int): Byte = ((
-                (m[o+2] and 0x00000001) shl 7) or (
-                (m[o+3] and 0x000007f0) shr 4)).toByte()
+                (m[o + 2] and 0x00000001) shl 7) or (
+                (m[o + 3] and 0x000007f0) shr 4)).toByte()
 
         private fun extract6(m: IntArray, o: Int): Byte = ((
-                (m[o+3] and 0x0000000f) shl 4) or (
-                (m[o+4] and 0x00000780) shr 7)).toByte()
+                (m[o + 3] and 0x0000000f) shl 4) or (
+                (m[o + 4] and 0x00000780) shr 7)).toByte()
 
         private fun extract7(m: IntArray, o: Int): Byte = ((
-                (m[o+4] and 0x0000007f) shl 1) or (
-                (m[o+5] and 0x00000400) shr 10)).toByte()
+                (m[o + 4] and 0x0000007f) shl 1) or (
+                (m[o + 5] and 0x00000400) shr 10)).toByte()
 
         private fun extract8(m: IntArray, o: Int): Byte = (
-                (m[o+5] and 0x000003fc) shr 2).toByte()
+                (m[o + 5] and 0x000003fc) shr 2).toByte()
 
         private fun extract9(m: IntArray, o: Int): Byte = ((
-                (m[o+5] and 0x00000003) shl 6) or (
-                (m[o+6] and 0x000007e0) shr 5)).toByte()
+                (m[o + 5] and 0x00000003) shl 6) or (
+                (m[o + 6] and 0x000007e0) shr 5)).toByte()
 
         private fun extract10(m: IntArray, o: Int): Byte = ((
-                (m[o+6] and 0x0000001f) shl 3) or (
-                (m[o+7] and 0x00000700) shr 8)).toByte()
+                (m[o + 6] and 0x0000001f) shl 3) or (
+                (m[o + 7] and 0x00000700) shr 8)).toByte()
 
         private fun extract11(m: IntArray, o: Int): Byte = (
-                m[o+7] and 0x000000ff).toByte()
+                m[o + 7] and 0x000000ff).toByte()
 
         fun extractByte(mnemonic: IntArray, byteIdx: Int): Byte {
             val offset = byteIdx / 11 * 8
