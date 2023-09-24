@@ -22,13 +22,16 @@ kotlin {
         }
     }
     js(IR) {
-        browser {
-            commonWebpackConfig {
-                cssSupport {
-                    enabled.set(true)
-                }
-            }
-        }
+        binaries.executable()
+        browser()
+        nodejs()
+        /*@Suppress("OPT_IN_USAGE")
+        wasm {
+            browser()
+            nodejs()
+            d8()
+        }*/
+        generateTypeScriptDefinitions()
     }
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
