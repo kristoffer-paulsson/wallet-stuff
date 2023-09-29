@@ -1,5 +1,5 @@
 package io.bipcrypto.util
 
-interface EndianAware {
+internal interface EndianAware {
     val littleEndian: Boolean
 }

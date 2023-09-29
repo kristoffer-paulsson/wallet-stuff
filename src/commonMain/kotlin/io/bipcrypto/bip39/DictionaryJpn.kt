@@ -1,8 +1,8 @@
 package io.bipcrypto.bip39
 
-object DictionaryJpn : WordList {
+public object DictionaryJpn : WordList {
 
-    override val wordList = listOf(
+    override val wordList: List<String> = listOf(
         "あいこくしん",
         "あいさつ",
         "あいだ",

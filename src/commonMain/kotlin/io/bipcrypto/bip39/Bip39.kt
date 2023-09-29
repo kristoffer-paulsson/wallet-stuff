@@ -3,11 +3,11 @@ package io.bipcrypto.bip39
 import doist.x.normalize.Form
 import doist.x.normalize.normalize
 
-class Bip39 internal constructor(
-    val entropy: Entropy,
-    val mnemonic: Mnemonic,
-    val passphrase: Passphrase,
-    val strength: Strength
+public class Bip39 internal constructor(
+    public val entropy: Entropy,
+    public val mnemonic: Mnemonic,
+    public val passphrase: Passphrase,
+    public val strength: Strength
 ) {
 
     init {
@@ -15,21 +15,21 @@ class Bip39 internal constructor(
         require(mnemonic.words.size == strength.wordCount)
     }
 
-    val seed: Seed by lazy { mnemonic.toSeed(passphrase) }
+    public val seed: Seed by lazy { mnemonic.toSeed(passphrase) }
 
-    constructor(
+    public constructor(
         entropy: Entropy,
         passphrase: Passphrase = Passphrase(),
         language: Language = Language.ENGLISH,
     ) : this(entropy, entropy.toKeys().toMnemonic(language), passphrase, Strength.bySize(entropy.entropy.size))
 
-    constructor(
+    public constructor(
         mnemonic: Mnemonic,
         passphrase: Passphrase = Passphrase(),
     ) : this(mnemonic.toKeys().toEntropy(), mnemonic, passphrase, Strength.byCount(mnemonic.words.size))
 
-    companion object {
-        fun fromSentence(sentence: String, passphrase: String = ""): Bip39 {
+    public companion object {
+        public fun fromSentence(sentence: String, passphrase: String = ""): Bip39 {
             val normalized = sentence.normalize(Form.NFKD)
             val sep = Delimiter.find(normalized)
             val words = mutableListOf<String>()
@@ -39,7 +39,7 @@ class Bip39 internal constructor(
             return Bip39(Mnemonic(words, language), Passphrase(passphrase))
         }
 
-        fun fromSentence(sentence: String, language: Language, passphrase: String = ""): Bip39 {
+        public fun fromSentence(sentence: String, language: Language, passphrase: String = ""): Bip39 {
             val normalized = sentence.normalize(Form.NFKD)
             val sep = Delimiter.find(normalized)
             val words = mutableListOf<String>()

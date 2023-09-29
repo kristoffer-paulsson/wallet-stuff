@@ -4,20 +4,20 @@ import org.angproj.crypt.sha.Sha256Hash
 import kotlin.jvm.JvmInline
 
 @JvmInline
-value class Keys(private val mnemonic: IntArray) {
+public value class Keys(private val mnemonic: IntArray) {
 
     init {
-        require(sizes.contains(mnemonic.size))
+        require(Strength.counts.contains(mnemonic.size))
     }
 
-    internal fun toMnemonic(language: Language): Mnemonic {
+    public fun toMnemonic(language: Language): Mnemonic {
         val wordList = WordList.getDictionary(language)
         val words = mutableListOf<String>()
         mnemonic.forEach { i -> words.add(wordList.wordAt(i)) }
         return Mnemonic(words, language)
     }
 
-    internal fun toEntropy(): Entropy {
+    public fun toEntropy(): Entropy {
         val strength = Strength.byCount(mnemonic.size)
         val entropy = ByteArray(strength.size)
         (entropy.indices).forEachIndexed { index, _ -> entropy[index] = extractByte(mnemonic, index) }
@@ -27,14 +27,7 @@ value class Keys(private val mnemonic: IntArray) {
         return Entropy(entropy)
     }
 
-    companion object {
-        val sizes = setOf(
-            Strength.DEFAULT.wordCount,
-            Strength.LOW.wordCount,
-            Strength.MEDIUM.wordCount,
-            Strength.HIGH.wordCount,
-            Strength.VERY_HIGH.wordCount
-        )
+    protected companion object {
 
         private fun extract1(m: IntArray, o: Int): Byte = (m[o + 0] shr 3).toByte()
 
@@ -75,7 +68,7 @@ value class Keys(private val mnemonic: IntArray) {
         private fun extract11(m: IntArray, o: Int): Byte = (
                 m[o + 7] and 0x000000ff).toByte()
 
-        fun extractByte(mnemonic: IntArray, byteIdx: Int): Byte {
+        private fun extractByte(mnemonic: IntArray, byteIdx: Int): Byte {
             val offset = byteIdx / 11 * 8
             val extr = byteIdx.mod(11)
 
@@ -95,7 +88,7 @@ value class Keys(private val mnemonic: IntArray) {
             }
         }
 
-        fun verifyChecksum(hash: ByteArray, strength: Strength, lastWord: Int): Boolean {
+        private fun verifyChecksum(hash: ByteArray, strength: Strength, lastWord: Int): Boolean {
             return when (strength) {
                 Strength.DEFAULT -> (lastWord and 0x00000000f) == ((hash[0].toInt() shr 4) and 0x00000000f)
                 Strength.LOW -> (lastWord and 0x00000001f) == ((hash[0].toInt() shr 3) and 0x00000001f)

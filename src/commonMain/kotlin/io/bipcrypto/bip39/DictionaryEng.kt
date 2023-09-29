@@ -1,8 +1,8 @@
 package io.bipcrypto.bip39
 
-object DictionaryEng : WordList {
+public object DictionaryEng : WordList {
 
-    override val wordList = listOf(
+    override val wordList: List<String> = listOf(
         "abandon",
         "ability",
         "able",

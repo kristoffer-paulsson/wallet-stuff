@@ -5,6 +5,6 @@ import doist.x.normalize.normalize
 import kotlin.jvm.JvmInline
 
 @JvmInline
-value class Passphrase(val passphrase: String = "") {
-    fun toSalt(): ByteArray = "mnemonic$passphrase".normalize(Form.NFKD).encodeToByteArray()
+public value class Passphrase(private val passphrase: String = "") {
+    public fun toSalt(): ByteArray = "mnemonic$passphrase".normalize(Form.NFKD).encodeToByteArray()
 }

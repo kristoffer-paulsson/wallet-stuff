@@ -4,13 +4,13 @@ import org.angproj.crypt.sha.Sha256Hash
 import kotlin.jvm.JvmInline
 
 @JvmInline
-value class Entropy(val entropy: ByteArray) {
+public value class Entropy(internal val entropy: ByteArray) {
 
     init {
         require(Strength.sizes.contains(entropy.size))
     }
 
-    fun toKeys(): Keys {
+    public fun toKeys(): Keys {
         val strength = Strength.bySize(entropy.size)
         val mnemonic = IntArray(strength.wordCount)
         (0 until mnemonic.size - 1).forEachIndexed { index, _ -> mnemonic[index] = extractWord(entropy, index) }
@@ -18,7 +18,7 @@ value class Entropy(val entropy: ByteArray) {
         return Keys(mnemonic)
     }
 
-    companion object {
+    protected companion object {
         private fun extract1(e: ByteArray, o: Int): Int = (
                 (e[o + 0].toInt() and 0x000000ff) shl 3) or (
                 (e[o + 1].toInt() and 0x000000e0) shr 5)
@@ -53,7 +53,7 @@ value class Entropy(val entropy: ByteArray) {
                 (e[o + 9].toInt() and 0x00000007) shl 8) or (
                 e[o + 10].toInt() and 0x000000ff)
 
-        fun extractWord(entropy: ByteArray, wordIdx: Int): Int {
+        private fun extractWord(entropy: ByteArray, wordIdx: Int): Int {
             val offset = wordIdx / 8 * 11
             val extr = wordIdx.mod(8)
 
@@ -85,7 +85,7 @@ value class Entropy(val entropy: ByteArray) {
         private fun extract24(e: ByteArray, o: Int): Int = (
                 (e[o + 9].toInt() and 0x00000007) shl 8)
 
-        fun extractLast(entropy: ByteArray, wordIdx: Int): Int {
+        private fun extractLast(entropy: ByteArray, wordIdx: Int): Int {
             val offset = wordIdx / 8 * 11
             val sha = Sha256Hash.create()
             sha.update(entropy)

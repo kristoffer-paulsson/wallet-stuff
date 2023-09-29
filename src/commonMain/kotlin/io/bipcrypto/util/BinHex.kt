@@ -3,7 +3,7 @@ package io.bipcrypto.util
 import kotlin.jvm.JvmStatic
 
 
-enum class HexDigits(val digit: Char) {
+public enum class HexDigits(public val digit: Char) {
     ZERO('0'),
     ONE('1'),
     TWO('2'),
@@ -31,7 +31,7 @@ enum class HexDigits(val digit: Char) {
 }
 
 
-enum class HexValues(val value: Int) {
+public enum class HexValues(public val value: Int) {
     ZERO(0),
     ONE(1),
     TWO(2),
@@ -68,7 +68,7 @@ enum class HexValues(val value: Int) {
 }
 
 
-object BinHex {
+public object BinHex {
 
     private fun upperBits(byte: Int): Char = when (byte) {
         HexValues.U_ZERO.value -> HexDigits.ZERO.digit
@@ -111,7 +111,7 @@ object BinHex {
     }
 
     @JvmStatic
-    fun encodeToHex(data: ByteArray): String {
+    public fun encodeToHex(data: ByteArray): String {
         val hex = CharArray(data.size * 2)
         for (i in data.indices) {
             val j = i * 2
@@ -181,7 +181,7 @@ object BinHex {
     }
 
     @JvmStatic
-    fun decodeToBin(hex: String): ByteArray {
+    public fun decodeToBin(hex: String): ByteArray {
         val data = ByteArray(hex.length / 2)
         for (i in data.indices) {
             val j = i * 2

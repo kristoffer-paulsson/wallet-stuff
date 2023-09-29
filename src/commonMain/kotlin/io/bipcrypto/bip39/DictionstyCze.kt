@@ -1,8 +1,8 @@
 package io.bipcrypto.bip39
 
-object DictionstyCze : WordList {
+public object DictionstyCze : WordList {
 
-    override val wordList = listOf(
+    override val wordList: List<String> = listOf(
         "abdikace",
         "abeceda",
         "adresa",

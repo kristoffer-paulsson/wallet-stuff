@@ -1,6 +1,6 @@
 package io.bipcrypto.util
 
-enum class Endian(val order: Int) {
+internal enum class Endian(val order: Int) {
     UNKNOWN(0),
     LITTLE(1),
     BIG(2),

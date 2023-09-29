@@ -1,8 +1,8 @@
 package io.bipcrypto.bip39
 
-object DictionarySpa : WordList {
+public object DictionarySpa : WordList {
 
-    override val wordList = listOf(
+    override val wordList: List<String> = listOf(
         "ábaco",
         "abdomen",
         "abeja",

@@ -1,18 +1,18 @@
 package io.bipcrypto.bip39
 
-sealed interface WordList {
+public sealed interface WordList {
 
-    val wordList: List<String>
+    public val wordList: List<String>
 
-    fun wordOf(word: String): Int = when (val index = wordList.indexOf(word)) {
+    public fun wordOf(word: String): Int = when (val index = wordList.indexOf(word)) {
         -1 -> throw IllegalArgumentException("Word not in list. ($word - $this)")
         else -> index
     }
 
-    fun wordAt(index: Int): String = wordList.elementAt(index)
+    public fun wordAt(index: Int): String = wordList.elementAt(index)
 
-    companion object {
-        fun getDictionary(language: Language): WordList = when (language) {
+    public companion object {
+        public fun getDictionary(language: Language): WordList = when (language) {
             Language.ENGLISH -> DictionaryEng
             Language.JAPANESE -> DictionaryJpn
             Language.KOREAN -> DictionaryKor
@@ -25,9 +25,9 @@ sealed interface WordList {
             Language.PORTUGUESE -> DictionaryPor
         }
 
-        fun validateWords(words: List<String>, language: Language): Boolean = getDictionary(language).wordList.containsAll(words)
+        public fun validateWords(words: List<String>, language: Language): Boolean = getDictionary(language).wordList.containsAll(words)
 
-        fun recognize(words: List<String>): Language = when {
+        public fun recognize(words: List<String>): Language = when {
             validateWords(words, Language.ENGLISH) -> Language.ENGLISH
             validateWords(words, Language.JAPANESE) -> Language.JAPANESE
             validateWords(words, Language.KOREAN) -> Language.KOREAN

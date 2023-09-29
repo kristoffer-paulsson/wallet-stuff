@@ -1,8 +1,8 @@
 package io.bipcrypto.bip39
 
-object DictionaryKor : WordList {
+public object DictionaryKor : WordList {
 
-    override val wordList = listOf(
+    override val wordList: List<String> = listOf(
         "가격",
         "가끔",
         "가난",

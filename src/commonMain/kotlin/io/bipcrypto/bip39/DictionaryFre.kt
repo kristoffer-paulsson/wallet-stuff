@@ -1,8 +1,8 @@
 package io.bipcrypto.bip39
 
-object DictionaryFre : WordList {
+public object DictionaryFre : WordList {
 
-    override val wordList = listOf(
+    override val wordList: List<String> = listOf(
         "abaisser",
         "abandon",
         "abdiquer",

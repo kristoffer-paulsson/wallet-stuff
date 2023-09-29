@@ -1,8 +1,8 @@
 package io.bipcrypto.bip39
 
-object DictionaryChiSimplified : WordList {
+public object DictionaryChiSimplified : WordList {
 
-    override val wordList = listOf(
+    override val wordList: List<String> = listOf(
         "的",
         "一",
         "是",
