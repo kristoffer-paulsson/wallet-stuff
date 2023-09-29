@@ -1,6 +1,5 @@
-package util
+package io.bipcrypto.util
 
-import io.bipcrypto.util.BinHex
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
