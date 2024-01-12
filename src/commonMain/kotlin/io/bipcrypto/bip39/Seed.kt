@@ -1,14 +1,18 @@
 package io.bipcrypto.bip39
 
+import io.bipcrypto.bip32.MasterSeed
 import io.bipcrypto.util.BinHex
 import kotlin.jvm.JvmInline
 
 @JvmInline
-public value class Seed(private val seed: ByteArray) {
+public value class Seed(private val value: ByteArray) {
 
-    init {
-        require(seed.size == 64)
-    }
+    init { require(value.size == 64) }
 
-    public fun toHex(): String = BinHex.encodeToHex(seed)
+    public val seed: ByteArray
+        get() = value.copyOf()
+
+    public fun toHex(): String = BinHex.encodeToHex(value)
 }
+
+public fun Seed.toBip32MasterSeed() : MasterSeed = MasterSeed(seed)

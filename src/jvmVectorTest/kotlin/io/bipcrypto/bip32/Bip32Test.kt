@@ -1,6 +1,14 @@
 package io.bipcrypto.bip32
 
+import org.angproj.crypt.SecureRandom
+import org.junit.Test
+
 class Bip32Test {
+
+    @Test
+    fun testMasterKey () {
+        val m = MasterKey(SecureRandom.getSecureEntropy(32))
+    }
 
     // Test vectors from:
     // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
