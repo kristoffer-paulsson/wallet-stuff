@@ -12,3 +12,4 @@ Some developers that implements of BIP-0039 doesn't seem to struggle far enough 
 # Critique of BIP-0032
 
 1. The master key generation requires that the secp256k1 variable N be an unsigned integer, this is however not mentioned in the specification. But is visible in some crypto libraries that encoding the N curve from hexadecimal requires a hack when loaded into i big integer a'la Java.
+2. In the specification for the function "serP(P)" it is not clear what is meant, many other developers has complained on too short wording, whether it is a ECDSA or Ed25519 key pair. While I myself didn't understand how to extract the parity of key Y. I would not have found the key type confusion without googling. [See here](https://github.com/satoshilabs/slips/issues/1251)

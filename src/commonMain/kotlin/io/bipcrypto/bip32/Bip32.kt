@@ -27,7 +27,7 @@ public object Bip32 {
     }
 
     public fun serializePair(x: BigInt, y: BigInt): ByteArray {
-
+        TODO("FIX")
     }
 
     private val PREFIX_POSITIVE: ByteArray = byteArrayOf(BigSigned.POSITIVE.signed.toByte())
