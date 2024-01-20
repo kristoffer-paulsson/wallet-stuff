@@ -6,6 +6,15 @@ import org.angproj.aux.pkg.Convention.Companion.asBig
 import org.angproj.aux.util.bigIntOf
 import org.angproj.aux.util.writeUIntAt
 
+/**
+ * https://www.secg.org/sec2-v2.pdf
+ *
+ * Complementary specification to BIP-0032:
+ * https://www.secg.org/sec1-v2.pdf
+ *
+ * SEC1 V2, section 2.3
+ * */
+
 public object Bip32 {
     public fun parse256(p: ByteArray) : BigInt = when(p.first().toInt() < 0) {
         true -> bigIntOf(PREFIX_POSITIVE + p)

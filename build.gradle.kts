@@ -39,7 +39,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.angproj.aux:angelos-project-aux:0.6.2")
-                implementation("org.angproj.crypt:angelos-project-crypt:0.2.2")
+                implementation("org.angproj.crypt:angelos-project-crypt:0.2.3")
                 implementation("com.doist.x:normalize:1.0.5")
             }
         }
