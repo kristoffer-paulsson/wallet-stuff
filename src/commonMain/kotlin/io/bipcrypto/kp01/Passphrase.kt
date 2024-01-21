@@ -22,14 +22,14 @@ public class Passphrase internal constructor(
     public fun toSalt(): ByteArray = "mnemonic".encodeToByteArray() + passphrase
 
     @OptIn(ExperimentalEncodingApi::class)
-    public override fun toString(): String = Base64.encode(passphrase)
+    public override fun toString(): String = Translate.encode(passphrase)
 
     private constructor(elements: Pair<ByteArray, ByteArray>) : this(elements.first, elements.second)
 
     internal constructor(passphrase: ByteArray) : this(splitPassphrase(passphrase))
 
     @OptIn(ExperimentalEncodingApi::class)
-    public constructor(passphrase: String) : this(Base64.decode(passphrase))
+    public constructor(passphrase: String) : this(Translate.decode(passphrase))
 
     public companion object {
 

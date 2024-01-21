@@ -10,7 +10,12 @@ class Kp01Test {
             val e = Entropy(Random.nextBytes(16)).toKeys().toMnemonic(Language.ENGLISH)
             val p = Passphrase.newPassphraseFrom(Random.nextBytes(Random.nextInt().mod(3) + 8))
             val kp = Kp01.fromSentence(e.toString(), p.toString())
-            println("Mnemonic: ${e}\nPassphrase: ${p}\nLanguage: ${kp.mnemonic.language.iso}\nSeed (hex): ${kp.seed.toHex()}\n")
+            println(
+                "Mnemonic: ${e}\n" +
+                "Passphrase: ${p}\n" +
+                "Language: ${kp.mnemonic.language.iso}\n" +
+                "Seed (hex): ${kp.seed.toHex()}\n"
+            )
         }
     }
 }
