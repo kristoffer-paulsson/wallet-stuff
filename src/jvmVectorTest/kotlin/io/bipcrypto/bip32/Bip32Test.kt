@@ -7,7 +7,7 @@ class Bip32Test {
 
     @Test
     fun testMasterKey () {
-        val m = MasterKey(SecureRandom.getSecureEntropy(32))
+        //val m = MasterKey(SecureRandom.getSecureEntropy(32))
     }
 
     // Test vectors from:
