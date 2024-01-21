@@ -1,13 +1,14 @@
 package io.bipcrypto.kp01
 
-import org.angproj.crypt.sha.Sha256Hash
-import org.angproj.crypt.sha.Sha384Hash
+import org.angproj.crypt.sha.Sha512Hash
 import kotlin.jvm.JvmInline
 
 @JvmInline
 public value class Keys(private val mnemonic: IntArray) {
 
-    init { require(mnemonic.size == Strength.DEFAULT.wordCount) }
+    init {
+        require(mnemonic.size == Strength.DEFAULT.wordCount)
+    }
 
     public fun toMnemonic(language: Language): Mnemonic {
         val wordList = WordList.getDictionary(language)
@@ -19,7 +20,7 @@ public value class Keys(private val mnemonic: IntArray) {
     public fun toEntropy(): Entropy {
         val entropy = ByteArray(16)
         (entropy.indices).forEachIndexed { index, _ -> entropy[index] = extractByte(mnemonic, index) }
-        val sha = Sha384Hash.create()
+        val sha = Sha512Hash.create()
         sha.update(entropy)
         check(verifyChecksum(sha.final(), mnemonic.last())) { "Mnemonic checksum validation failure." }
         return Entropy(entropy)

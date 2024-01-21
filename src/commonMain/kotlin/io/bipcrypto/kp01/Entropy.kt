@@ -1,7 +1,5 @@
 package io.bipcrypto.kp01
 
-import org.angproj.crypt.hmac.KeyHashedMac
-import org.angproj.crypt.sha.Sha384Hash
 import org.angproj.crypt.sha.Sha512Hash
 import kotlin.jvm.JvmInline
 
@@ -76,7 +74,7 @@ public value class Entropy(internal val entropy: ByteArray) {
 
         private fun extractLast(entropy: ByteArray, wordIdx: Int): Int {
             val offset = wordIdx / 8 * 11
-            val sha = Sha384Hash.create()
+            val sha = Sha512Hash.create()
             sha.update(entropy)
             val hash = sha.final()
 
@@ -86,10 +84,4 @@ public value class Entropy(internal val entropy: ByteArray) {
             }
         }
     }
-}
-
-public fun Entropy.toSeed(passphrase: Passphrase): Seed {
-    val hmac = KeyHashedMac.create(passphrase.toSalt(), Sha512Hash)
-    hmac.update(entropy)
-    return Seed(hmac.final().copyOf(64))
 }

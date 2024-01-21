@@ -19,7 +19,8 @@ public sealed interface WordList {
             else -> error("Unsupported language!")
         }
 
-        public fun validateWords(words: List<String>, language: Language): Boolean = getDictionary(language).wordList.containsAll(words)
+        public fun validateWords(words: List<String>, language: Language): Boolean =
+            getDictionary(language).wordList.containsAll(words)
 
         public fun recognize(words: List<String>): Language = when {
             validateWords(words, Language.ENGLISH) -> Language.ENGLISH

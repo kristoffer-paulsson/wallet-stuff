@@ -1,5 +1,8 @@
 package io.bipcrypto.kp01
 
+import org.angproj.crypt.hmac.KeyHashedMac
+import org.angproj.crypt.sha.Sha512Hash
+
 public class Kp01 internal constructor(
     public val entropy: Entropy,
     public val mnemonic: Mnemonic,
@@ -11,7 +14,13 @@ public class Kp01 internal constructor(
         require(mnemonic.words.size == Strength.DEFAULT.wordCount)
     }
 
-    public val seed: Seed by lazy { entropy.toSeed(passphrase) }
+    public val seed: Seed by lazy { toSeed() }
+
+    private fun toSeed(): Seed {
+        val hmac = KeyHashedMac.create(passphrase.toSalt(), Sha512Hash)
+        hmac.update(mnemonic.language.toByteArray() + entropy.entropy)
+        return Seed(hmac.final().copyOf(64))
+    }
 
     public constructor(
         entropy: Entropy,
