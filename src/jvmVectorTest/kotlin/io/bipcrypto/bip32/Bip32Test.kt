@@ -1,13 +1,13 @@
 package io.bipcrypto.bip32
 
-import org.angproj.crypt.SecureRandom
+import org.angproj.aux.sec.SecureEntropy
 import org.junit.Test
 
 class Bip32Test {
 
     @Test
     fun testMasterKey () {
-        //val m = MasterKey(SecureRandom.getSecureEntropy(32))
+        val m = MasterKey(MasterSeed(SecureEntropy.read(32)))
     }
 
     // Test vectors from:

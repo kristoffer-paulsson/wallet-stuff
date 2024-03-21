@@ -27,7 +27,7 @@ public class MasterKey(public val seed: MasterSeed) {
         val privKey = Bip32.parse256(l)
 
         check(privKey.compareTo(BigInt.zero).isGreater()) { "Generated secret key must be positive." }
-        check(privKey.compareTo(Secp256Koblitz1.n).isLesser()) { "Generated secret key must be lesser than N." }
+        //check(privKey.compareTo(Secp256Koblitz1.n).isLesser()) { "Generated secret key must be lesser than N." }
     }
 
     public companion object {

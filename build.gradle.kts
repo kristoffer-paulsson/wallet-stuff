@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "1.8.22"
-    kotlin("plugin.serialization") version "1.8.22"
+    kotlin("multiplatform") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
     `maven-publish`
 }
 
@@ -38,8 +38,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.angproj.aux:angelos-project-aux:0.6.2")
-                implementation("org.angproj.crypt:angelos-project-crypt:0.2.3")
+                implementation("org.angproj.aux:angelos-project-aux:0.9.1")
+                implementation("org.angproj.crypt:angelos-project-crypt:0.2.6")
                 implementation("com.doist.x:normalize:1.0.5")
             }
         }

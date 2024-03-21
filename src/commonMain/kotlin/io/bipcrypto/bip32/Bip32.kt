@@ -2,7 +2,7 @@ package io.bipcrypto.bip32
 
 import org.angproj.aux.num.BigInt
 import org.angproj.aux.num.BigSigned
-import org.angproj.aux.pkg.Convention.Companion.asBig
+import org.angproj.aux.util.EndianAware
 import org.angproj.aux.util.bigIntOf
 import org.angproj.aux.util.writeUIntAt
 
@@ -15,7 +15,14 @@ import org.angproj.aux.util.writeUIntAt
  * SEC1 V2, section 2.3
  * */
 
-public object Bip32 {
+/**
+ * https://github.com/horizontalsystems/ethereum-kit-android
+ * https://github.com/horizontalsystems/hd-wallet-kit-android
+ * https://github.com/trustwallet/wallet-connect-kotlin
+ * https://github.com/bcgit/bc-java
+ * */
+
+public object Bip32: EndianAware {
     public fun parse256(p: ByteArray) : BigInt = when(p.first().toInt() < 0) {
         true -> bigIntOf(PREFIX_POSITIVE + p)
         else -> bigIntOf(p)
