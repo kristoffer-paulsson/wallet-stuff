@@ -2,7 +2,6 @@ package io.bipcrypto.kp01
 
 import org.angproj.aux.sec.SecureEntropy
 import org.angproj.aux.sec.SecureRandom
-import kotlin.random.Random
 import kotlin.test.Test
 
 class Kp01Test {

@@ -5,6 +5,10 @@ import org.angproj.aux.num.BigSigned
 import org.angproj.aux.util.EndianAware
 import org.angproj.aux.util.bigIntOf
 import org.angproj.aux.util.writeUIntAt
+import org.angproj.crypt.sec.Conversion
+import org.angproj.crypt.sec.EllipticCurvePoint
+import org.angproj.crypt.sec.FieldElement
+import org.angproj.crypt.sec.Secp256Koblitz1
 
 /**
  * https://www.secg.org/sec2-v2.pdf
@@ -23,6 +27,10 @@ import org.angproj.aux.util.writeUIntAt
  * */
 
 public object Bip32: EndianAware {
+    public fun parse(p: BigInt): Pair<BigInt, BigInt> {
+        TODO("FIX")
+    }
+
     public fun parse256(p: ByteArray) : BigInt = when(p.first().toInt() < 0) {
         true -> bigIntOf(PREFIX_POSITIVE + p)
         else -> bigIntOf(p)
@@ -43,7 +51,8 @@ public object Bip32: EndianAware {
     }
 
     public fun serializePair(x: BigInt, y: BigInt): ByteArray {
-        TODO("FIX")
+        val point = EllipticCurvePoint(FieldElement(x), FieldElement(y))
+        return Conversion.ellipticCurvePoint2octetString(point, Secp256Koblitz1.domainParameters, true).value
     }
 
     private val PREFIX_POSITIVE: ByteArray = byteArrayOf(BigSigned.POSITIVE.signed.toByte())
